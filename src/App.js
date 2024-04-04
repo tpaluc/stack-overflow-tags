@@ -19,7 +19,7 @@ class TagList extends Component {
     this.handlePageSize100 = this.handlePageSize.bind(this, 100);
   }
 
-  componentDidMount() {
+  componentMount() { 
     this.fetchTags();
   }
 
@@ -43,27 +43,24 @@ class TagList extends Component {
         url = `https://api.stackexchange.com/2.3/tags?order=desc&sort=activity&pagesize=${pageSize}&site=stackoverflow`;
     }
 
-    // Set timeout for fetch operation (e.g., 10 seconds)
-    const fetchTimeout = 10000; // 10 seconds
+    const fetchTimeout = 10000;
     const fetchPromise = fetch(url)
       .then(response => response.json());
 
-    // Create a promise that resolves after the fetchTimeout
     const timeoutPromise = new Promise((resolve, reject) => {
       setTimeout(() => {
         reject(new Error('Data loading timeout exceeded'));
       }, fetchTimeout);
     });
 
-    // Race between the fetch operation and the timeout promise
     Promise.race([fetchPromise, timeoutPromise])
       .then(data => {
-        console.log("Data loaded:", data); // Log the data received from API
+        console.log("Data loaded:", data);
         const latestTags = data.items;
         this.setState({ tags: latestTags, loading: false, error: null });
       })
       .catch(error => {
-        console.error("Error loading data:", error); // Log any errors that occur during fetch
+        console.error("Error loading data:", error);
         this.setState({ error: error.message, loading: false });
       });
   }
@@ -84,11 +81,11 @@ class TagList extends Component {
     const { tags, loading, error } = this.state;
 
     if (loading) {
-      return <div>Please wait...</div>;
+      return <div className='errorMessage'>Please wait...</div>;
     }
 
     if (error) {
-      return <div>Error: {error}</div>;
+      return <div className='errorMessage'>Error: {error}</div>;
     }
 
     return (

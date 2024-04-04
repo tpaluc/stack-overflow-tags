@@ -60,3 +60,8 @@ img {
   flex-direction: column;
   width: 100%;
 }
+
+.errorMessage { 
+  font-size: 100px;
+  margin-top: 200px;
+}
